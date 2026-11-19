@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dance Cards</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b0b12">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<video id="video" playsinline muted></video>
+<canvas id="stage"></canvas>
+
+<!-- Big status line, readable from across the room -->
+<div id="status" role="status" aria-live="polite">Loading…</div>
+
+<!-- Prompt card -->
+<div id="card" class="hidden" aria-live="assertive">
+  <div class="card-label">CARD</div>
+  <div id="card-text"></div>
+</div>
+
+<!-- Instrument picker (chosen by gesture) -->
+<div id="picker" class="hidden"></div>
+
+<!-- Chord ladder: shows which chord each hand height plays -->
+<div id="ladder" class="hidden"></div>
+
+<!-- Play HUD -->
+<div id="hud" class="hidden">
+  <div id="hud-chord">—</div>
+  <div id="hud-row">
+    <span id="hud-instr"></span>
+    <span class="meter"><span class="meter-label">REVERB</span><span class="bar"><span id="hud-reverb"></span></span></span>
+    <span id="hud-ambient">AMBIENT OFF</span>
+  </div>
+</div>
+
+<div id="hint">Space: new card · 1–4: instrument · A: ambient · S: settings · F: full screen</div>
+<button id="gear" aria-label="Settings" title="Settings (S)">⚙</button>
+
+<!-- Start screen: browsers need one click before using the camera and sound -->
+<div id="start">
+  <h1>Dance Cards</h1>
+  <p>Move to make music. Swipe a hand to draw a card.</p>
+  <button id="start-btn" disabled>Loading tracker…</button>
+  <p id="start-note" class="small"></p>
+</div>
+
+<!-- Settings -->
+<dialog id="settings">
+  <form method="dialog">
+    <h2>Settings</h2>
+    <label>Camera <select id="set-camera"></select></label>
+    <label>Movement sensitivity <input id="set-sens" type="range" min="0.5" max="3" step="0.1" value="1">
+      <span class="small">Higher = smaller movements are enough (good for low mobility or seated dancing)</span></label>
+    <label><input id="set-seated" type="checkbox"> Seated mode (upper body only)</label>
+    <label>New card while playing
+      <select id="set-newcard">
+        <option value="handsup">Hold both hands above head (1.5 s)</option>
+        <option value="swipe">Swipe (any time)</option>
+        <option value="off">Keyboard / helper only</option>
+      </select></label>
+    <label>Hold time to choose (s) <input id="set-dwell" type="range" min="0.6" max="3" step="0.1" value="1.5"></label>
+    <label><input id="set-speak" type="checkbox" checked> Read cards aloud</label>
+    <label>Voice <select id="set-voice"></select></label>
+    <label>Key <select id="set-key"></select></label>
+    <label>Sound comes from
+      <select id="set-audio">
+        <option value="browser">This page</option>
+        <option value="max">Max (MIDI) only</option>
+        <option value="both">Both</option>
+      </select></label>
+    <label>Ambient volume <input id="set-ambvol" type="range" min="0" max="1" step="0.05" value="0.6"></label>
+    <label>Ambient file <input id="set-ambfile" type="file" accept="audio/*">
+      <span class="small">Or put your file in the <code>ambient</code> folder named <code>ambient.mp3</code></span></label>
+    <label><input id="set-video" type="checkbox" checked> Show camera image</label>
+    <label>Prompt cards (one per line — leave empty to use prompts.txt)
+      <textarea id="set-prompts" rows="6" placeholder="Leave empty to use prompts.txt"></textarea></label>
+    <div class="row">
+      <button id="set-ambient" type="button">Toggle ambient (A)</button>
+      <button id="set-reset" type="button">Reset settings</button>
+      <button value="close" class="primary">Done</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="mediapipe/pose/pose.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

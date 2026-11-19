@@ -1,0 +1,3 @@
+{ "name": "Dance Cards", "short_name": "Dance Cards", "start_url": "./index.html", "display": "fullscreen",
+  "background_color": "#0b0b12", "theme_color": "#0b0b12",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }] }
